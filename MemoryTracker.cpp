@@ -117,6 +117,11 @@ static std::string GetMemoryTypeString(uint32_t flags)
         return "global";
     }
 }
+/** There is another attribute needed to be considered.*/
+void MallocedMemory(Sanitizer_ResourceMemoryData *pMallocedMemory){
+    std::cout<<"Malloc|Global|"<<std::hex<<pMallocedMemory->address<<std::dec
+    <<"|"<<pMallocedMemory->size<<std::endl;
+}
 
 void StreamSynchronized(
     CallbackTracker* pCallbackTracker,
@@ -197,6 +202,11 @@ void MemoryTrackerCallback(
                 {
                     auto* pModuleData = (Sanitizer_ResourceModuleData*)cbdata;
                     ModuleLoaded(pModuleData);
+                    break;
+                }
+                case SANITIZER_CBID_RESOURCE_DEVICE_MEMORY_ALLOC:{
+                    auto* pMallocData = (Sanitizer_ResourceMemoryData*)cbdata;
+                    MallocedMemory(pMallocData);
                     break;
                 }
                 default:
