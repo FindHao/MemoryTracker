@@ -39,6 +39,7 @@ struct MemoryAccess
     uint32_t accessSize;
     uint32_t flags;
     dim3     threadId;
+    dim3     blockId;
 };
 
 // Main tracking structure that patches get as userdata

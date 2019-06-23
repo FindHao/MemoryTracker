@@ -50,6 +50,7 @@ SanitizerPatchResult MemoryAccessCallback(
     access.accessSize = accessSize;
     access.flags = flags;
     access.threadId = threadIdx;
+    access.blockId = blockIdx;
     access.pc = pc;
 
     return SANITIZER_PATCH_SUCCESS;

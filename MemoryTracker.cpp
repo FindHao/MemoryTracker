@@ -119,7 +119,9 @@ static std::string GetMemoryTypeString(uint32_t flags)
 }
 /** There is another attribute needed to be considered.*/
 void MallocedMemory(Sanitizer_ResourceMemoryData *pMallocedMemory){
-    std::cout<<"Malloc|Global|"<<std::hex<<pMallocedMemory->address<<std::dec
+//    start address
+    std::cout<<"Malloc|"<<std::hex<<pMallocedMemory->flags<<"|"<<pMallocedMemory->address<<std::dec
+// size (bytes)
     <<"|"<<pMallocedMemory->size<<std::endl;
 }
 
@@ -156,18 +158,26 @@ void StreamSynchronized(
 //                      << "," << access.threadId.x
 //                      << ") at address 0x" << std::hex << access.address << std::dec
 //                      << " (size is " << access.accessSize << " bytes)" << std::endl;
+
+
+// Use simple format can greatly reduce log filesize.
             std::cout << i << "|" << GetMemoryRWString(access.flags)
 //            pc
                       << "|"<<std::hex<<access.pc<<std::dec
 // memory type
                       << "|" << GetMemoryTypeString(access.flags)
 //                      thread id
-                      << "|" << access.threadId.z
+                      << "|" << access.blockId.z
+                      << "," << access.blockId.y
+                      << "," << access.blockId.x
+                      << "," << access.threadId.z
                       << "," << access.threadId.y
                       << "," << access.threadId.x
                       << "|"
                       << std::hex << access.address << std::dec
                       << "|" << access.accessSize << std::endl;
+//
+//
         }
 
         sanitizerFree(hTracker.accesses);
